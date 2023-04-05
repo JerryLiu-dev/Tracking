@@ -196,7 +196,6 @@ def eliminateWithCallTracking(callTrackingList=None):
             probability = 0
             for pre in pre_dict:
                 if all([value in pre.values() for value in post.values()]):
-                    print(post)
                     probability += factor.getProbability(pre)
             eliminated.setProbability(post, probability)
 
