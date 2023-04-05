@@ -350,7 +350,11 @@ class DiscreteDistribution(dict):
         {}
         """
         "*** YOUR CODE HERE ***"
-        raiseNotDefined()
+        for i in self:
+                if self.total() == 0:
+                    self[i] = 1
+                else:
+                    self[i] = self[i] / self.total()
         "*** END YOUR CODE HERE ***"
 
     def sample(self):
@@ -375,7 +379,19 @@ class DiscreteDistribution(dict):
         0.0
         """
         "*** YOUR CODE HERE ***"
-        raiseNotDefined()
+        if self.total() != 1:
+            self.normalize()
+            
+        sorted_dict = dict(sorted(self.items(), key=lambda x:x[1]))
+        weight = random.random()
+        total = 0
+
+        for elem in sorted_dict:
+            total += sorted_dict[elem]
+            if total >= weight:
+                print(total, ">=", weight)
+                return elem
+
         "*** END YOUR CODE HERE ***"
 
 
