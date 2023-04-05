@@ -14,6 +14,7 @@
 
 import random
 import itertools
+from util import manhattanDistance
 from typing import List, Dict, Tuple
 import busters
 import game
@@ -46,6 +47,7 @@ def constructBayesNet(gameState: hunters.GameState):
           it's non-negative and |obs - true| <= MAX_NOISE
     - this uses slightly simplified mechanics vs the ones used later for simplicity
     """
+   
     # constants to use
     PAC = "Pacman"
     GHOST0 = "Ghost0"
@@ -56,22 +58,21 @@ def constructBayesNet(gameState: hunters.GameState):
     Y_RANGE = gameState.getWalls().height
     MAX_NOISE = 7
 
-    variables = []
-    edges = []
+    variables = [PAC,GHOST0,GHOST1,OBS0,OBS1]
+    edges = [(GHOST0,OBS0),(PAC,OBS0),(PAC,OBS1),(GHOST1,OBS1)]
     variableDomainsDict = {}
 
-    "*** YOUR CODE HERE ***"
-    variables.extend([GHOST0, PAC, GHOST1, OBS0, OBS1])
-    edges.extend([(GHOST0, OBS0), (PAC, OBS0), (PAC, OBS1),(GHOST1, OBS1)])
-    for variable in variables:
-        if variable == PAC or variable == GHOST0 or variable == GHOST1:
-            variableDomainsDict[variable] = []
-            for x in range(X_RANGE):
-                for y in range(Y_RANGE): 
-                    variableDomainsDict[variable].append((x,y))
-        else:
-            variableDomainsDict[variable] = range(0, X_RANGE + Y_RANGE+ MAX_NOISE)
-    "*** END YOUR CODE HERE ***"
+    all = []
+    for x in range (X_RANGE):
+        for y in range(Y_RANGE):
+            all.append((x,y))
+
+    variableDomainsDict[PAC] = all[:]
+    variableDomainsDict[GHOST0] = all[:]
+    variableDomainsDict[GHOST1] = all[:]
+
+    variableDomainsDict[OBS0] = list(range(0,X_RANGE+Y_RANGE+MAX_NOISE - 1))
+    variableDomainsDict[OBS1] = list(range(0,X_RANGE+Y_RANGE+MAX_NOISE - 1))
 
     net = bn.constructEmptyBayesNet(variables, edges, variableDomainsDict)
     return net

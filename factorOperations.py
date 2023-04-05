@@ -102,7 +102,50 @@ def joinFactors(factors: List[Factor]):
 
 
     "*** YOUR CODE HERE ***"
-    raiseNotDefined()
+    # keep track of all uncond and cond variables across factors
+    uncond_vars = set()
+    cond_vars = set()
+    
+    for factor in factors:
+        # updating unconditional and conditional variables
+        uncond = factor.unconditionedVariables()
+        cond = factor.conditionedVariables()
+        uncond_vars.update(uncond)
+        cond_vars.update(cond)
+        intersection = set(list(uncond_vars & cond_vars))
+        cond_vars -= intersection
+        
+        assignment_dicts = factor.getAllPossibleAssignmentDicts()
+        variableDomainsDict = factor.variableDomainsDict()
+
+        
+        for assignment_dict in assignment_dicts:
+            if assignment_dictw
+        # for var in uncond: 
+        #     if var in cond_vars:
+        #         cond_vars.remove(var)
+        #         uncond_vars.update(var)
+        #         for assignment_dict in assignment_dicts: 
+        #             print(assignment_dict)
+        #             probability = factor.getProbability(assignment_dict) * 0.1
+        #             factor.setProbability(assignment_dict, probability)
+
+        # for var in cond: 
+        #     if var in uncond_vars:
+        #         uncond_vars.remove(var)
+        #         for assignment_dict in assignment_dicts: 
+        #             probability = factor.getProbability(assignment_dict) * 0.1
+        #             factor.setProbability(assignment_dict, probability)
+
+        # updating 
+        
+
+    # # for variables that show up in both unconditional and conditional becomes unconditional
+    # for factor in factors:
+
+    return Factor(uncond_vars, cond_vars, variableDomainsDict)
+
+
     "*** END YOUR CODE HERE ***"
 
 ########### ########### ###########
