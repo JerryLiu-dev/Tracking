@@ -379,19 +379,14 @@ class DiscreteDistribution(dict):
         0.0
         """
         "*** YOUR CODE HERE ***"
-        if self.total() != 1:
-            self.normalize()
+     
             
         sorted_dict = dict(sorted(self.items(), key=lambda x:x[1]))
-        weight = random.random()
-        total = 0
-
+        samples = []
         for elem in sorted_dict:
-            total += sorted_dict[elem]
-            if total >= weight:
-                print(total, ">=", weight)
-                return elem
-
+            temp = [elem for i in range(int(sorted_dict[elem] * 10))]
+            samples.extend(temp)
+        return samples[random.randint(0,len(samples)-1)]
         "*** END YOUR CODE HERE ***"
 
 
