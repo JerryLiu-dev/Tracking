@@ -114,9 +114,11 @@ def joinFactors(factors: List[Factor]):
         cond_vars -= intersection
         variableDomainsDict = factor.variableDomainsDict()
 
+    # building joined factor
     joined = Factor(uncond_vars, cond_vars, variableDomainsDict)
     dicts = joined.getAllPossibleAssignmentDicts()
     
+    # updating probabilities
     for dict in dicts:
         joined_prob = 1
         for factor in factors:
@@ -124,66 +126,6 @@ def joinFactors(factors: List[Factor]):
         joined.setProbability(dict, joined_prob)
     
     return joined
-
-    # for 
-    #    joined.setAssignment
-
-    #     if not visited_factors:
-    #         for j in joined_dicts:
-    #             for c in curr_dicts:
-    #                 probability = factor.getProbability(c)
-    #                 print(probability)
-    #                 joined.setProbability(dict, probability)
-    #                 print(joined.getProbability(dict))
-    #     else:
-    #         for dict in assignment_dicts:
-    #             probability = joined.getProbability(dict) * factor.getProbability(dict)
-    #             print(probability)
-    #             joined.setProbability(dict, probability)
-
-    #     # update visited factors list
-    #     visited_factors.append(factor)
-
-    # return joined
-
-    # # joined.setProbability
-
-    # #     print(assignment_dicts)
-    # #     for assignment_dict in assignment_dicts:
-    # #         print("assignment dict:", assignment_dict, " prob:", factor.getProbability(assignment_dict))
-    # #         for visited in visited_factors:
-    # #             if 
-
-
-    #     # keep track of visited factors
-    #     visited_factors.append(factor)
-
-
-
-    #     # for var in uncond: 
-    #     #     if var in cond_vars:
-    #     #         cond_vars.remove(var)
-    #     #         uncond_vars.update(var)
-    #     #         for assignment_dict in assignment_dicts: 
-    #     #             print(assignment_dict)
-    #     #             probability = factor.getProbability(assignment_dict) * 0.1
-    #     #             factor.setProbability(assignment_dict, probability)
-
-    #     # for var in cond: 
-    #     #     if var in uncond_vars:
-    #     #         uncond_vars.remove(var)
-    #     #         for assignment_dict in assignment_dicts: 
-    #     #             probability = factor.getProbability(assignment_dict) * 0.1
-    #     #             factor.setProbability(assignment_dict, probability)
-
-    #     # updating 
-        
-
-    # # # for variables that show up in both unconditional and conditional becomes unconditional
-    # # for factor in factors:
-
-    # return Factor(uncond_vars, cond_vars, variableDomainsDict)
-
 
     "*** END YOUR CODE HERE ***"
 
