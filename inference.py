@@ -461,7 +461,6 @@ class InferenceModule:
         Return the probability P(noisyDistance | pacmanPosition, ghostPosition).
         """
         "*** YOUR CODE HERE ***"
-        
         if noisyDistance != 0 and not noisyDistance:
             if jailPosition == ghostPosition:
                 return 1
