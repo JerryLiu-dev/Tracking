@@ -617,7 +617,6 @@ class ExactInference(InferenceModule):
             tempdict[pos] = temp
         for k in tempdict.keys():
             self.beliefs[k] = tempdict[k]
-
         "*** END YOUR CODE HERE ***"
         
     def getBeliefDistribution(self):
