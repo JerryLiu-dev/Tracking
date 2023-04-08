@@ -717,5 +717,21 @@ class ParticleFilter(InferenceModule):
         gameState.
         """
         "*** YOUR CODE HERE ***"
-        raiseNotDefined()
+        import random
+        import pdb
+        distMap = {}
+        for pos in self.particles:
+            distMap[pos] = self.getPositionDistribution(gameState, pos)
+        temp = []
+        for particle in self.particles:
+            dist = distMap[particle]
+            ran = random.uniform(0,1)
+            tot = 0
+            for p in dist:
+                tot += dist[p]
+                if ran <= tot:
+                    temp.append(p)
+                    break
+        self.particles = temp
+        
         "*** END YOUR CODE HERE ***"
