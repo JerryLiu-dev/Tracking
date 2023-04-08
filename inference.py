@@ -607,8 +607,10 @@ class ExactInference(InferenceModule):
         
         tempdict = {}
         distMap = {}
+        #store the probability distribution of every position
         for p in self.allPositions:
             distMap[p] = self.getPositionDistribution(gameState,p)
+        #nested for loop models the summation for each possible position
         for pos in self.allPositions:
             temp = 0
             for p in self.allPositions:
@@ -648,7 +650,12 @@ class ParticleFilter(InferenceModule):
         """
         self.particles = []
         "*** YOUR CODE HERE ***"
-        raiseNotDefined()
+        parts = self.numParticles // len(self.legalPositions)
+        for pos in self.legalPositions:
+            self.particles.extend([pos*parts])
+        self.beliefs = DiscreteDistribution()
+        for p in self.legalPositions:
+            self.beliefs[p] = 1.0 / float(len(self.legalPositions))
         "*** END YOUR CODE HERE ***"
 
     def getBeliefDistribution(self):
@@ -660,7 +667,10 @@ class ParticleFilter(InferenceModule):
         This function should return a normalized distribution.
         """
         "*** YOUR CODE HERE ***"
-        raiseNotDefined()
+        
+        
+        return self.beliefs
+        
         "*** END YOUR CODE HERE ***"
     
     ########### ########### ###########
@@ -680,7 +690,7 @@ class ParticleFilter(InferenceModule):
         the DiscreteDistribution may be useful.
         """
         "*** YOUR CODE HERE ***"
-        raiseNotDefined()
+        self.all
         "*** END YOUR CODE HERE ***"
     
     ########### ########### ###########

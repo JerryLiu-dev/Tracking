@@ -60,12 +60,17 @@ class Distancer:
     The getDistance function is the only one you'll need after you create the object.
     """
     if self._distances == None:
+      print("1st if")
       return manhattanDistance(pos1, pos2)
     if isInt(pos1) and isInt(pos2):
+      print("2nd if")
       return self.getDistanceOnGrid(pos1, pos2)
     pos1Grids = getGrids2D(pos1)
     pos2Grids = getGrids2D(pos2)
+    print("1 grid", pos1Grids)
+    print("2 grid", pos2Grids)
     bestDistance = self.default
+    breakpoint()
     for pos1Snap, snap1Distance in pos1Grids:
       for pos2Snap, snap2Distance in pos2Grids:
         gridDistance = self.getDistanceOnGrid(pos1Snap, pos2Snap)
@@ -76,6 +81,7 @@ class Distancer:
 
   def getDistanceOnGrid(self, pos1, pos2):
     key = (pos1, pos2)
+    print("dist on grid:", self._distances, "key:", key)
     if key in self._distances:
       return self._distances[key]
     else:

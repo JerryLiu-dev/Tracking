@@ -19,6 +19,7 @@ from game import Directions
 from keyboardAgents import KeyboardAgent
 import inference
 import busters
+import pdb
 
 class NullGraphics:
     "Placeholder for graphics"
@@ -149,33 +150,59 @@ class GreedyBustersAgent(BustersAgent):
             [beliefs for i, beliefs in enumerate(self.ghostBeliefs)
              if livingGhosts[i+1]]
         "*** YOUR CODE HERE ***"
+
         # most likely position of each uncaptured ghost
         ghostPositions = []
-        for belief in livingGhostPositionDistributions:
-            sortedPosDistr = sorted(belief.items(), key = lambda x: x[1], reverse = True)
+        for posDistr in livingGhostPositionDistributions:
+            sortedPosDistr = sorted(posDistr.items(), key = lambda x: x[1], reverse = True)
             ghostPositions.append(sortedPosDistr[0][0])
 
-        # calculating closest ghost
-        closestDist = float("inf")
-        for ghostPos in ghostPositions:
-            distance = self.distancer.getDistance(ghostPos, pacmanPosition)
-            if distance < closestDist:
-                closestDist = distance
-                closestPos = ghostPos
-        
         # choose action that brings Pacman closest to the closest ghost
-        # distFromGhost = []
-        actionDist = {} # dict that maps each action to the closest distance from it (e.i. {"North": dist, ...})
+        distFromGhost = []
+        actionDist = {} # dict that maps each action to closest ghost and its distance from it (e.i. {"North": (ghost, dist), ...})
         for action in legal:
             successorPosition = Actions.getSuccessor(pacmanPosition, action)
+            print("successorPos: ", successorPosition)
+            print("ghostPosition list:", ghostPositions)
             # sorted list of distances between every ghost to successor pacman position after action, closest to farthest
-            # distFromGhost = sorted([self.distancer.getDistance(ghostPos, successorPosition) for ghostPos in ghostPositions])
+            pdb.set_trace()
+            distFromGhost = sorted([self.distancer.getDistance(ghostPos, successorPosition) for ghostPos in ghostPositions])
+            print("distances:", distFromGhost)
+
             # update dict 
-            actionDist[action] = self.distancer.getDistance(closestPos, successorPosition)
+            actionDist[action] = distFromGhost[0] 
 
         bestAction = sorted(actionDist.items(), key = lambda x: x[1])[0][0]
-        # bestAction, closestDist = best[0], best[1]
-
         return bestAction
+    
+        # # most likely position of each uncaptured ghost
+        # ghostPositions = []
+        # for belief in livingGhostPositionDistributions:
+        #     sortedPosDistr = sorted(belief.items(), key = lambda x: x[1], reverse = True)
+        #     ghostPositions.append(sortedPosDistr[0][0])
+
+        # # calculating closest ghost
+        # # closestDist = float("inf")
+        # # for ghostPos in ghostPositions:
+        # #     distance = self.distancer.getDistance(ghostPos, pacmanPosition)
+        # #     if distance < closestDist:
+        # #         closestDist = distance
+        # #         closestPos = ghostPos
+        
+        # # choose action that brings Pacman closest to the closest ghost
+        # distFromGhost = []
+        # actionDist = {} # dict that maps each action to the closest distance from it (e.i. {"North": dist, ...})
+        # for action in legal:
+        #     successorPosition = Actions.getSuccessor(pacmanPosition, action)
+            
+        #     # sorted list of distances between every ghost to successor pacman position after action, closest to farthest
+        #     distFromGhost = sorted([self.distancer.getDistance(ghostPos, successorPosition) for ghostPos in ghostPositions])
+        #     # update dict 
+        #     actionDist[action] = self.distancer.getDistance(closestPos, successorPosition)
+
+        # bestAction = sorted(actionDist.items(), key = lambda x: x[1])[0][0]
+        # # bestAction, closestDist = best[0], best[1]
+
+        # return bestAction
 
         "*** END YOUR CODE HERE ***"
