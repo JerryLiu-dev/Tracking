@@ -354,7 +354,7 @@ class DiscreteDistribution(dict):
             return
         
         total = self.total()
-        for i in self:
+        for i in self.keys():
             self[i] = self[i] / total
         "*** END YOUR CODE HERE ***"
 
@@ -462,11 +462,11 @@ class InferenceModule:
         Return the probability P(noisyDistance | pacmanPosition, ghostPosition).
         """
         "*** YOUR CODE HERE ***"
-        if jailPosition == ghostPosition and not noisyDistance:
-            return 0
-        if jailPosition == ghostPosition and noisyDistance:
+        if jailPosition == ghostPosition and noisyDistance == None:
             return 1
-        if noisyDistance == None:
+        elif jailPosition == ghostPosition:
+            return 0
+        elif noisyDistance == None:
             return 0
         
         return busters.getObservationProbability(noisyDistance, manhattanDistance(ghostPosition,pacmanPosition))
@@ -652,7 +652,7 @@ class ParticleFilter(InferenceModule):
         "*** YOUR CODE HERE ***"
         parts = self.numParticles // len(self.legalPositions)
         for pos in self.legalPositions:
-            self.particles.extend([pos*parts])
+            self.particles.extend([pos for p in range(parts)])
         self.beliefs = DiscreteDistribution()
         for p in self.legalPositions:
             self.beliefs[p] = 1.0 / float(len(self.legalPositions))
@@ -690,8 +690,22 @@ class ParticleFilter(InferenceModule):
         the DiscreteDistribution may be useful.
         """
         "*** YOUR CODE HERE ***"
-        self.all
-        "*** END YOUR CODE HERE ***"
+        import pdb
+        weights = DiscreteDistribution()
+  
+        for particle in self.particles:
+            
+            weights[particle] = weights.get(particle,0)
+            
+            weights[particle] += self.getObservationProb(observation,gameState.getPacmanPosition(), particle,self.getJailPosition())
+        if weights.total() == 0:
+            self.initializeUniformly(gameState)
+            return
+        self.particles = []
+        for particle in weights.keys():
+            self.beliefs[particle] = weights[particle]/ weights.total()
+
+            self.particles.extend([particle for p in range( int(self.numParticles* (weights[particle]/weights.total())) )])
     
     ########### ########### ###########
     ########### QUESTION 11 ###########
